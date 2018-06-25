@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include"BigNum.h"
 using namespace std;
 void sti(const string a,int *b)
 {
@@ -9,19 +10,19 @@ void sti(const string a,int *b)
 		b[a.length()-i-1]=a[i]-'0';
 	}
 }
-BigNum::BigNum(const BigNum& b)//¿½±´¹¹Ôì
+BigNum::BigNum(const BigNum& b)//æ‹·è´æ„é€ 
 {
 	len=b.len;
 	val=b.val;
 }
-BigNum BigNum::operator=(const BigNum& b)const //ÖØÔØ¸³Öµ
+BigNum& BigNum::operator=(const BigNum& b) //é‡è½½èµ‹å€¼
 {
 	BigNum a;
 	a.len=b.len;
 	a.val=b.val;
 	return a;
 }
-BigNum BigNum::operator+(const BigNum& b)const //ÖØÔØ¼Ó·¨
+BigNum& BigNum::operator+( BigNum& b) //é‡è½½åŠ æ³•
 {
 	BigNum a,t;
 	if(a.len<b.len) t=b,b=a,a=t;
@@ -33,16 +34,16 @@ BigNum BigNum::operator+(const BigNum& b)const //ÖØÔØ¼Ó·¨
          {
              a.val[i] -=10;
              if(i) a.val[i-1]++;
-            else a='1'+a;
+            else a.val='1'+a.val;
          }
 }
 return a;
 }
-BigNum BigNum::operator-(const BigNum& b)const
+BigNum& BigNum::operator-( BigNum& b)
 {
 	BigNum a,t;
 	int i,j,f=0;
-	if(a.len<b.len||(a.len=b.len&&a.val<b.val))
+	if(a.len<b.len||(a.len==b.len&&a.val<b.val))
 		{t=b,b=a,a=t;f=1;}
 	for(i=a.len-1,j=b.len-1;i>=0;i--,j--)
 	{
@@ -54,13 +55,14 @@ BigNum BigNum::operator-(const BigNum& b)const
 	if(f) a.val="-"+a.val;
 	return a;
 }
-BigNum BigNum::operator*(const BigNum& b)const
+BigNum& BigNum::operator*(const BigNum& b)const
 {
 	BigNum a;
 	int c[a.len+b.len]={0},av[a.len],bv[b.len];
 	int i,j;
     sti(a.val,av);
     sti(b.val,bv);
+     a.val="";
     for(i=0;i<a.len;i++){
 		for(j=0;j<b.len;j++)
 		c[i+j]+=av[i]+bv[j];
@@ -70,5 +72,40 @@ BigNum BigNum::operator*(const BigNum& b)const
 		c[i+1]+=c[i]/10;
 		c[i]=c[i]%10;
 	}
-	for(j=a.len+b.len)
+	while(c[j]==0)
+		j--;
+	for(j=a.len+b.len-1;j>=0;j--)
+	{
+      a.val+=(char)(c[j]+'0');
+	}
+	return a;
+}
+istream& operator>>(istream& in,BigNum& b)
+{
+	in>>b.val;
+	b.len=b.val.length();
+	return in;
+}
+ostream& operator<<(ostream&out, BigNum& b)
+{
+	cout<<b.val;
+	return out;
+}
+bool BigNum::operator>(const BigNum& b)const
+{
+	BigNum a;
+	if(a.len>b.len||(a.len==b.len&&a.val>b.val)) return true;
+	else return false;
+}
+bool BigNum::operator<(const BigNum& b)const
+{
+	BigNum a;
+	if(a.len>b.len||(a.len==b.len&&a.val>b.val)) return false;
+	else return true;
+}
+bool BigNum::operator==(const BigNum& b)const
+{
+	BigNum a;
+	if((a.len==b.len)&&(a.val==b.val)) return true;
+	else return false;
 }
