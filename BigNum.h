@@ -6,11 +6,11 @@ class BigNum
 	string val;
 	int len;
 	public:
-    BigNum(){val="0";len=1};  //¹¹Ôìº¯Êý
-    BigNum (const BigNum&); //¿½±´¹¹Ôìº¯Êý
-	BigNum &operator=(const BigNum&) const; //ÖØÔØÔËËã·û
-	BigNum &operator+(const BigNum&) const;
-	BigNum &operator-(const BigNum&) const;
+    BigNum(){val="0";len=1};  //æž„é€ å‡½æ•°
+    BigNum (const BigNum&); //æ‹·è´æž„é€ å‡½æ•°
+	BigNum &operator=(const BigNum&) ; //é‡è½½è¿ç®—ç¬¦
+	BigNum &operator+( BigNum&) ;
+	BigNum &operator-( BigNum&) ;
 	BigNum &operator*(const BigNum&) const;
 	bool   &operator>(const BigNum&) const;
 	bool   &operator<(const BigNum&) const;
